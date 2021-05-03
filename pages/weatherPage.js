@@ -20,7 +20,6 @@ class WeatherPage extends Component {
     componentDidMount() {
         Geolocation.getCurrentPosition(
 			position => {
-				console.log(position)
                 this.fetchWeather(position.coords.latitude, position.coords.longitude);
 			},
 			error => Alert.alert(error.message),
@@ -30,7 +29,7 @@ class WeatherPage extends Component {
 	}
 
   
-	fetchWeather(lat = 25, lon = 25) {
+	fetchWeather(lat , lon ) {
 		fetch(
 			`http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&APPID=${API_KEY}&units=metric`
 		)
@@ -44,7 +43,10 @@ class WeatherPage extends Component {
                     lat:json.coord.lat,
                     lon:json.coord.lon
 				});
+				this.props.setTemperature(json.main.temp)
+				this.props.setWeatherCondition(json.weather[0].main)
 			});
+			
 	}
 
 	logout(){
@@ -56,12 +58,19 @@ class WeatherPage extends Component {
 		this.props.navigation.navigate('SendEmailPage');
 	  }
 
+	  navigateToCountries(){
+		this.props.navigation.navigate('CountriesPage');
+	  }
+
 	render(){
         return (
 			<View style={styles.weatherContainer}>
 				<Button title={'Log out'} onPress={()=>this.logout()}/>
 				<View style={styles.headerContainer}>
 					<Text style={styles.tempText}>{this.state.temperature}˚</Text>
+					<TouchableOpacity style={{backgroundColor:'black'}} onPress={()=>this.navigateToCountries()}>
+						<Text style={{fontSize:20,color:'white'}}>Choose Country other than your location</Text>
+					</TouchableOpacity>
 				</View>
 				<View style={styles.bodyContainer}>
 				<Text style={styles.title}>Lat: {this.state.lat}</Text>

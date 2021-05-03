@@ -6,9 +6,9 @@ const initialState = {
 export default Reducer = (state=initialState,action) => {
     switch(action.type){
         case 'setTemperature':
-            return {temperature:action.payload}
+            return {...state,temperature:action.payload}
         case 'setWeatherCondition':
-            return {weatherCondition:action.payload}
+            return {...state,weatherCondition:action.payload}
     }
     return state
 }

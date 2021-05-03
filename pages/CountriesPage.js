@@ -4,68 +4,58 @@
 import React from 'react';
 import { View, Text ,StyleSheet,Dimensions,TouchableOpacity} from 'react-native';
 import Input from './Components/Input'
-import {sendEmail} from './sendEmail'
+
+import {API_KEY} from '../utils/WeatherApiKey'
 
 import {connect} from 'react-redux'
 
-class SendEmailPage extends React.Component{
+class CountriesPage extends React.Component{
 
-    state = {email:'mohamad@hotmail.com',subject:'test subject',body:`Temperature :${this.props.temperature} Weather Condition:${this.props.weatherCondition} `}
+    state = {country:'beirut',temp:0}
 
-  componentDidMount(){
+
+    getCityWeatherBtn(){
+        const {country} = this.state;
     
-	
-  }
-
-    sendEmailBtn(){
-        const {email,subject,body} = this.state;
-     
-        sendEmail(
-            `${email}`,
-               `${subject}`,
-            `Temperature :${this.props.temperature} Weather Condition:${this.props.weatherCondition} ${body}`
-        ).then(() => {
-            console.log('Your message was successfully sent!');
+        fetch(`https://community-open-weather-map.p.rapidapi.com/find?q=${this.state.country}&cnt=1&mode=null&lon=0&type=link%2C%20accurate&lat=0&units=imperial%2C%20metric`, {
+	"method": "GET",
+	"headers": {
+		"x-rapidapi-key": "d19c51494dmsh2f543011a8e1151p123e8djsnebbabdbd5c69",
+		"x-rapidapi-host": "community-open-weather-map.p.rapidapi.com"
+            }
+        }).then(res => res.json())
+        .then(json => {
+            this.setState({temp:json.list[0].main.temp-273.15})
+            console.log(json.list[0].main.temp-273.15)
+        })
+        .catch(err => {
+            console.error(err);
         });
     }
 
     render(){
         return (
             <View  style={styles.weatherContainer}>
+            <Text style={{alignSelf:'center',fontSize:35}}>{this.state.temp}˚</Text>
             <View style={styles.CenterContainer}>
-            <Text style={styles.textStyle}>Temperature : {this.props.temperature}</Text>
-            <Text style={styles.textStyle}>Weather Condition : {this.props.weatherCondition}</Text>
-
-            <View style={{height:( Dimensions.get('window').height*5)/100}}/>
-            <Text>To:</Text>
+         
             <Input 
-            placeholder={'Email'}
-            value={this.state.email}
-            onChangeText={text=>this.setState({email:text})}
+            placeholder={'Enter Country'}
+            value={this.state.country}
+            onChangeText={text=>this.setState({country:text})}
             />
 
             <View style={{height:( Dimensions.get('window').height*5)/100}}/>
 
-            <Text>Subject:</Text>
-            <Input 
-            placeholder={'Subject'}
-            value={this.state.subject}
-            onChangeText={text=>this.setState({subject:text})}
-            />
 
-            <View style={{height:( Dimensions.get('window').height*5)/100}}/>
-
-            <Text>Body:</Text>
-            <Input 
-            placeholder={'Body'}
-            value={this.state.body}
-            onChangeText={text=>this.setState({body:text})}
-            />
+            <TouchableOpacity style={styles.SignInButton} onPress={()=>this.getCityWeatherBtn()}>
+            <Text style={styles.textStyle}>Choose Country</Text>
+            </TouchableOpacity>
 
             <View style={{height:( Dimensions.get('window').height*5)/100}}/>
 
             <TouchableOpacity style={styles.SignInButton} onPress={()=>this.sendEmailBtn()}>
-            <Text style={styles.textStyle}>Send email</Text>
+            <Text style={styles.textStyle}>Save Country</Text>
             </TouchableOpacity>
         </View>
         </View>
@@ -108,7 +98,7 @@ const styles = StyleSheet.create({
     SignInButton:{
       backgroundColor:'white',
       borderRadius:10,
-      width:( Dimensions.get('window').width*30)/100,
+      width:( Dimensions.get('window').width*40)/100,
       height:( Dimensions.get('window').height*5)/100,
       alignItems:'center'
     }
@@ -116,7 +106,6 @@ const styles = StyleSheet.create({
     textStyle:{
         color:'black',
         fontSize:19,
-        fontWeight:'bold',  
     }
     ,
   errorTextStyle:{
@@ -142,4 +131,4 @@ function mapStateToProps (state) {
     }
     }
   
-  export default connect(mapStateToProps,mapDispatchToProps)(SendEmailPage);
+  export default connect(mapStateToProps,mapDispatchToProps)(CountriesPage);
