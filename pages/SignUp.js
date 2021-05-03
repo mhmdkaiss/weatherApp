@@ -11,11 +11,15 @@ class SignUpPage extends React.Component{
         const {email,password} = this.state;
       
         auth().createUserWithEmailAndPassword(email,password)
-        .then(this.props.navigation.navigate('WeatherPage'))
+        .then(this.onLoginSuccess.bind(this))
         .catch(()=>{
           this.setState({error:'Error!',loading:false})
         })
         
+    }
+
+    async onLoginSuccess(){
+      this.props.navigation.navigate('WeatherPage');
     }
 
     render(){

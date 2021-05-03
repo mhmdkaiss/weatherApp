@@ -36,7 +36,7 @@ class SendEmailPage extends React.Component{
             <Text style={styles.textStyle}>Temperature : {this.props.temperature}</Text>
             <Text style={styles.textStyle}>Weather Condition : {this.props.weatherCondition}</Text>
 
-            <View style={{height:( Dimensions.get('window').height*5)/100}}/>
+            <View style={{height:( Dimensions.get('window').height*2)/100}}/>
             <Text>To:</Text>
             <Input 
             placeholder={'Email'}
@@ -44,7 +44,7 @@ class SendEmailPage extends React.Component{
             onChangeText={text=>this.setState({email:text})}
             />
 
-            <View style={{height:( Dimensions.get('window').height*5)/100}}/>
+            <View style={{height:( Dimensions.get('window').height*2)/100}}/>
 
             <Text>Subject:</Text>
             <Input 
@@ -53,7 +53,7 @@ class SendEmailPage extends React.Component{
             onChangeText={text=>this.setState({subject:text})}
             />
 
-            <View style={{height:( Dimensions.get('window').height*5)/100}}/>
+            <View style={{height:( Dimensions.get('window').height*2)/100}}/>
 
             <Text>Body:</Text>
             <Input 
@@ -62,7 +62,7 @@ class SendEmailPage extends React.Component{
             onChangeText={text=>this.setState({body:text})}
             />
 
-            <View style={{height:( Dimensions.get('window').height*5)/100}}/>
+            <View style={{height:( Dimensions.get('window').height*3)/100}}/>
 
             <TouchableOpacity style={styles.SignInButton} onPress={()=>this.sendEmailBtn()}>
             <Text style={styles.textStyle}>Send email</Text>

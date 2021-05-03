@@ -22,9 +22,8 @@ function UserNotSignedIn() {
     <HomeStack.Navigator>
         <HomeStack.Screen name="SignInPage" component={SignInPage} options={{headerShown: false}} />
         <HomeStack.Screen name="SignUpPage" component={SignUpPage} options={{headerShown: false}} />
-        <HomeStack.Screen name="WeatherPage" component={WeatherPage} options={{headerShown: false}} />
-        
-        <HomeStack.Screen name="SendEmailPage" component={SendEmailPage} options={{headerShown: false}} />
+        {/* <HomeStack.Screen name="WeatherPage" component={WeatherPage} options={{headerShown: false}} /> */}
+        {/* <HomeStack.Screen name="SendEmailPage" component={SendEmailPage} options={{headerShown: false}} /> */}
     </HomeStack.Navigator>
   );
 }

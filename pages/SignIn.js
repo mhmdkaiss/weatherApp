@@ -5,17 +5,21 @@ import auth from '@react-native-firebase/auth';
 
 class SignInPage extends React.Component{
 
-    state = {email:'mohamad@hotmail.com',password:'12345678',error:'',loading:false}
+    state = {email:'moham.com',password:'12345678',error:'',loading:false}
 
     SignInButton(){
         const {email,password} = this.state;
       
         auth().signInWithEmailAndPassword(email,password)
-        .then(this.props.navigation.navigate('WeatherPage'))
+        .then(this.onLoginSuccess.bind(this))
         .catch(()=>{
           this.setState({error:'Error!',loading:false})
         })
         
+    }
+
+    async onLoginSuccess(){
+      this.props.navigation.navigate('WeatherPage');
     }
 
     render(){
@@ -48,7 +52,7 @@ class SignInPage extends React.Component{
 
             <View style={{height:( Dimensions.get('window').height*2)/100}}/>
 
-        {this.state.error?<Text style={styles.errorTextStyle}>{this.state.error}</Text>:null}
+            {this.state.error?<Text style={styles.errorTextStyle}>{this.state.error}</Text>:null}
 
             <TouchableOpacity style={styles.SignInButton} onPress={()=>this.SignInButton()}>
             <Text style={styles.textStyle}>Sign In</Text>

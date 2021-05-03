@@ -45,14 +45,14 @@ class CountriesPage extends React.Component{
             onChangeText={text=>this.setState({country:text})}
             />
 
-            <View style={{height:( Dimensions.get('window').height*5)/100}}/>
+            <View style={{height:( Dimensions.get('window').height*2)/100}}/>
 
 
             <TouchableOpacity style={styles.SignInButton} onPress={()=>this.getCityWeatherBtn()}>
-            <Text style={styles.textStyle}>Choose Country</Text>
+            <Text style={styles.textStyle}>Get Weather</Text>
             </TouchableOpacity>
 
-            <View style={{height:( Dimensions.get('window').height*5)/100}}/>
+            <View style={{height:( Dimensions.get('window').height*2)/100}}/>
 
             <TouchableOpacity style={styles.SignInButton} onPress={()=>this.sendEmailBtn()}>
             <Text style={styles.textStyle}>Save Country</Text>
