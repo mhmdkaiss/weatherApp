@@ -3,6 +3,8 @@ import { View, Text ,StyleSheet,Dimensions,TouchableOpacity} from 'react-native'
 import Input from './Components/Input'
 import auth from '@react-native-firebase/auth';
 
+import firestore from '@react-native-firebase/firestore';
+
 class SignUpPage extends React.Component{
 
     state = {email:'mohamad@hotmail.com',password:'12345678',error:'',loading:false}
@@ -19,6 +21,22 @@ class SignUpPage extends React.Component{
     }
 
     async onLoginSuccess(){
+      firestore()
+      .collection('Users')
+      .add({
+        email: this.state.email,
+        countries: [],
+        id:0,
+      })
+      .then(querySnapshot => {
+        firestore()
+        .collection('Users')
+        .doc(querySnapshot._documentPath._parts[1])
+        .update({
+          id:querySnapshot._documentPath._parts[1] ,
+        })
+      });
+
       this.props.navigation.navigate('WeatherPage');
     }
 

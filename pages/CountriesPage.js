@@ -2,16 +2,43 @@
 
 
 import React from 'react';
-import { View, Text ,StyleSheet,Dimensions,TouchableOpacity} from 'react-native';
+import { View, Text ,StyleSheet,Dimensions,TouchableOpacity, FlatList} from 'react-native';
 import Input from './Components/Input'
-
-import {API_KEY} from '../utils/WeatherApiKey'
 
 import {connect} from 'react-redux'
 
+import firestore from '@react-native-firebase/firestore';
+import auth from '@react-native-firebase/auth';
+
 class CountriesPage extends React.Component{
 
-    state = {country:'beirut',temp:0}
+    state = {country:'beirut',temp:0,countries:[]}
+
+    componentDidMount(){
+      // console.log(auth().currentUser.email)
+      firestore()
+      .collection('Users')
+      .get()
+      .then(querySnapshot => {
+        const usersArray=[]
+        querySnapshot.forEach(documentSnapshot => {
+          usersArray.push(documentSnapshot.data())
+        });
+        // console.log( usersArray);
+        for(const i in usersArray){
+          if(usersArray[i].email == auth().currentUser.email){
+            
+           firestore()
+            .collection('Users')
+            .doc(usersArray[i].id)
+            .onSnapshot(documentSnapshot => {
+              this.setState({countries:documentSnapshot.data().countries})
+            });
+          }
+        }
+      });
+      
+    }
 
 
     getCityWeatherBtn(){
@@ -31,6 +58,36 @@ class CountriesPage extends React.Component{
             console.error(err);
         });
     }
+
+    addCountry(){
+     var {countries,country}= this.state
+     
+      countries.push(country);
+      
+      firestore()
+      .collection('Users')
+      .get()
+      .then(querySnapshot => {
+        const usersArray=[]
+        querySnapshot.forEach(documentSnapshot => {
+          usersArray.push(documentSnapshot.data())
+        });
+        // console.log( usersArray);
+        for(const i in usersArray){
+          if(usersArray[i].email == auth().currentUser.email){
+           
+           firestore()
+            .collection('Users')
+            .doc(usersArray[i].id)
+            .update({
+              countries: this.state.countries,
+            })
+          }
+        }
+      });
+      
+    }
+
 
     render(){
         return (
@@ -53,10 +110,37 @@ class CountriesPage extends React.Component{
 
             <View style={{height:( Dimensions.get('window').height*2)/100}}/>
 
-            <TouchableOpacity style={styles.SignInButton} onPress={()=>this.sendEmailBtn()}>
+            <TouchableOpacity style={styles.SignInButton} onPress={()=>this.addCountry()}>
             <Text style={styles.textStyle}>Save Country</Text>
             </TouchableOpacity>
         </View>
+
+        <View style={{height:( Dimensions.get('window').height*2)/100}}/>
+        
+        <FlatList
+          data={this.state.countries}
+         
+          ItemSeparatorComponent={()=>(<View
+          style={{
+            height: 1,
+            width: "100%",
+            backgroundColor: "#C8C8C8",
+          }}
+        />)}
+
+          renderItem={({ item, index, separators }) => (
+            <TouchableOpacity
+              // key={item.key}
+              // onPress={() => console.log()}
+              >
+              <View style={{ backgroundColor: 'white' }}>
+                <Text>{item}</Text>
+              </View>
+            </TouchableOpacity>
+          )}
+          keyExtractor={(item, index) => index.toString()}
+        />
+
         </View>
         );    
     }
@@ -65,7 +149,7 @@ class CountriesPage extends React.Component{
 const styles = StyleSheet.create({
 	weatherContainer: {
 		flex:1,
-        justifyContent:'center',
+        // justifyContent:'center',
 		backgroundColor: '#f7b733',  
 	}
     ,
@@ -83,16 +167,7 @@ const styles = StyleSheet.create({
       flexDirection:'row',
       width:( Dimensions.get('window').width*80)/100,
     }
-    ,
-    SignUpTextStyle:{
-      color:'white',
-      fontSize:20
-    }
-    // ,
-    // FrogetPassTextStyle:{
-    //   color:'white',
-    //   fontSize:16
-    // }
+   
     ,
     SignInButton:{
       backgroundColor:'white',
