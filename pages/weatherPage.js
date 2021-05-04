@@ -23,8 +23,11 @@ class WeatherPage extends Component {
                 this.fetchWeather(position.coords.latitude, position.coords.longitude);
 			},
 			error => Alert.alert(error.message),
-			{ enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+			{ enableHighAccuracy: false,
+				timeout: 5000,
+				maximumAge: 10000}
 		);
+
 
 	}
 
@@ -69,7 +72,7 @@ class WeatherPage extends Component {
 				<View style={styles.headerContainer}>
 					<Text style={styles.tempText}>{this.state.temperature}˚</Text>
 					<TouchableOpacity style={{backgroundColor:'black'}} onPress={()=>this.navigateToCountries()}>
-						<Text style={{fontSize:20,color:'white'}}>Choose Country other than your location</Text>
+						<Text style={{fontSize:18,color:'white'}}>Choose Country other than your location</Text>
 					</TouchableOpacity>
 				</View>
 				<View style={styles.bodyContainer}>

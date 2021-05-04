@@ -5,7 +5,7 @@ import auth from '@react-native-firebase/auth';
 
 class SignInPage extends React.Component{
 
-    state = {email:'moham.com',password:'12345678',error:'',loading:false}
+    state = {email:'mohamad@hotmail.com',password:'12345678',error:'',loading:false}
 
     SignInButton(){
         const {email,password} = this.state;
