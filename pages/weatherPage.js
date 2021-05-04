@@ -17,9 +17,10 @@ class WeatherPage extends Component {
         lon:0,
 	};
 
-    componentDidMount() {
+    componentWillMount() {
         Geolocation.getCurrentPosition(
 			position => {
+				this.setState({lat:position.coords.latitude,lon:position.coords.longitude})
                 this.fetchWeather(position.coords.latitude, position.coords.longitude);
 			},
 			error => Alert.alert(error.message),
@@ -32,7 +33,7 @@ class WeatherPage extends Component {
 	}
 
   
-	fetchWeather(lat , lon ) {
+	fetchWeather(lat =25, lon=25 ) {
 		fetch(
 			`http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&APPID=${API_KEY}&units=metric`
 		)
@@ -70,7 +71,7 @@ class WeatherPage extends Component {
 			<View style={styles.weatherContainer}>
 				<Button title={'Log out'} onPress={()=>this.logout()}/>
 				<View style={styles.headerContainer}>
-					<Text style={styles.tempText}>{this.state.temperature}˚</Text>
+					<Text style={styles.tempText}>{this.props.temperature}˚</Text>
 					<TouchableOpacity style={{backgroundColor:'black'}} onPress={()=>this.navigateToCountries()}>
 						<Text style={{fontSize:18,color:'white'}}>Choose Country other than your location</Text>
 					</TouchableOpacity>
