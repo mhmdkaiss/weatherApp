@@ -11,6 +11,7 @@ import { Provider } from 'react-redux'
 import Reducer from './pages/reducers/reducer'
 import {createStore} from 'redux'
 import CountriesPage from './pages/CountriesPage';
+import CountryWeatherPage from './pages/CountryWeatherPage';
 
 const store = createStore(Reducer);
 
@@ -35,7 +36,7 @@ function UserSignedIn() {
         <HomeStack.Screen name="SignUpPage" component={SignUpPage} options={{headerShown: false}} />
         <HomeStack.Screen name="SendEmailPage" component={SendEmailPage} options={{headerShown: ' '}} />
         <HomeStack.Screen name="CountriesPage" component={CountriesPage} options={{headerShown: ' '}} />
-        
+        <HomeStack.Screen name="CountryWeatherPage" component={CountryWeatherPage} options={{headerShown: ' '}} /> 
     </HomeStack.Navigator>
   );
 }

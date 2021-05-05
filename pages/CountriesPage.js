@@ -88,6 +88,10 @@ class CountriesPage extends React.Component{
       
     }
 
+    showCountryWeather(itemname){
+      this.props.navigation.navigate('CountryWeatherPage', { countryname: itemname })
+    }
+
 
     render(){
         return (
@@ -122,19 +126,19 @@ class CountriesPage extends React.Component{
          
           ItemSeparatorComponent={()=>(<View
           style={{
-            height: 1,
+            height: 4,
             width: "100%",
-            backgroundColor: "#C8C8C8",
+            backgroundColor: "#f7b733",
           }}
         />)}
 
           renderItem={({ item, index, separators }) => (
             <TouchableOpacity
               // key={item.key}
-              // onPress={() => console.log()}
+              onPress={() => this.showCountryWeather(item)}
               >
-              <View style={{ backgroundColor: 'white' }}>
-                <Text>{item}</Text>
+              <View style={{ backgroundColor: 'white',alignItems:'center' }}>
+                <Text style={{fontSize:20}}>{item}</Text>
               </View>
             </TouchableOpacity>
           )}
